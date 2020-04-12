@@ -90,7 +90,6 @@
     <None Include="App.config" />
     <None Include="Brokenithm-Evolved-iOS_TemporaryKey.pfx" />
     <None Include="packages.config" />
-    <None Include="Properties\DataSources\Program.datasource" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
