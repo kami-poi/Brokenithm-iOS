@@ -53,7 +53,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>D9F081B11D6612953F2A8F1991CAD94CE391308A</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B0CD76B2EBFD879430CA219EFFF3579AAA74A644</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>Brokenithm-Evolved-iOS_TemporaryKey.pfx</ManifestKeyFile>
@@ -73,6 +73,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -88,6 +90,7 @@
     <None Include="App.config" />
     <None Include="Brokenithm-Evolved-iOS_TemporaryKey.pfx" />
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\Program.datasource" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">

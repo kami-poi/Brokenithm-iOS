@@ -21,6 +21,10 @@ namespace Brokenithm_Evolved_iOS
         public static bool exiting = false;
         public static iDeviceEventCallBack _eventCallback;
 
+        
+        public static byte[] ledRgb;
+        public static byte[] input = new byte[32];
+
         static void Main(string[] args)
         {
             Console.Title = "Brokenithm-Evolved-iOS";
@@ -51,6 +55,12 @@ namespace Brokenithm_Evolved_iOS
             }
 
             Console.WriteLine("Waiting for device...");
+
+#if DEBUG
+            //var form = new Form1();
+            //form.Show();
+#endif
+
             while (Console.ReadKey().Key != ConsoleKey.Q) { }
             exiting = true;
         }
@@ -187,15 +197,18 @@ namespace Brokenithm_Evolved_iOS
                     // key input
                     if (airEnabled)
                     {
-                        sharedBufferAccessor.WriteArray<byte>(0, buf, 3, 6 + 32);
+                        Array.Copy(buf, 9, input, 0, 32);
+                        //sharedBufferAccessor.WriteArray<byte>(0, buf, 3, 6 + 32);
                     }
                     else
                     {
-                        sharedBufferAccessor.WriteArray<byte>(6, buf, 3 + 6, 32);
+                        Array.Copy(buf, 9, input, 0, 32);
+                        //sharedBufferAccessor.WriteArray<byte>(6, buf, 3 + 6, 32);
                     }
                     if (len > 3 + 6 + 32)
                     {
-                        sharedBufferAccessor.WriteArray<byte>(6+32+96, buf, 3+6+32, len - (3 + 6 + 32));
+                        Array.Copy(buf, 3+6+32, input, 0, 32);
+                        //sharedBufferAccessor.WriteArray<byte>(6+32+96, buf, 3+6+32, len - (3 + 6 + 32));
                     }
                 }
                 else if (len >= 4 &&
@@ -237,6 +250,13 @@ namespace Brokenithm_Evolved_iOS
                         Console.WriteLine("unknown packet");
                     }
                 }
+#if DEBUG
+                foreach (var a in input)
+                {
+                    if (a == 0) continue;
+                    Console.Write((char)a);
+                }
+#endif
             }
             conn.Dispose();
             connection_map.Remove(udid);
@@ -258,11 +278,27 @@ namespace Brokenithm_Evolved_iOS
         private static int skipCount = 0;
         public static void outputLed()
         {
+            if (ledRgb == null)
+            {
+                ledRgb = new byte[32 * 3];
+                for(int i = 0; i != 32; i++)
+                {
+                    ledRgb[i * 3 + 0] = 0x99;//b
+                    ledRgb[i * 3 + 1] = 0xCC;//r
+                    ledRgb[i * 3 + 2] = 0xFF;//g
+                }
+                for(int i = 0; i != 3; i++)
+                {
+                    ledRgb[12 + i * 12 * 3 + 2] = 0xCC;//g
+                    ledRgb[12 + i * 12 * 3 + 0] = 0xFF;//b
+                }
+            }
             while (true)
             {
                 if (exiting) break;
-                byte[] ledRgb = new byte[32 * 3];
-                sharedBufferAccessor.ReadArray<byte>(6 + 32, ledRgb, 0, 32 * 3);
+                //byte[] ledRgb = new byte[32 * 3];
+                //sharedBufferAccessor.ReadArray<byte>(6 + 32, ledRgb, 0, 32 * 3);
+                //CCFF99(204 255 153),CCCCFF(204 204 255)
                 bool same = true;
                 for (int i = 0; i < 32 * 3; i++)
                 {
